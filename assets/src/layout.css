@@ -1,0 +1,86 @@
+@utility col {
+	@apply flex flex-col;
+}
+
+@utility col-start {
+	@apply flex flex-col items-start;
+}
+
+@utility col-center {
+	@apply flex flex-col items-center;
+}
+
+@utility col-end {
+	@apply flex flex-col items-end;
+}
+
+@utility col-reverse {
+	@apply flex flex-col-reverse;
+}
+
+@utility col-reverse-start {
+	@apply flex flex-col-reverse items-start;
+}
+
+@utility col-reverse-center {
+	@apply flex flex-col-reverse items-center;
+}
+
+@utility col-reverse-end {
+	@apply flex flex-col-reverse items-end;
+}
+
+@utility row {
+	@apply flex;
+}
+
+@utility row-start {
+	@apply flex items-start;
+}
+
+@utility row-center {
+	@apply flex items-center;
+}
+
+@utility row-end {
+	@apply flex items-end;
+}
+
+@utility row-reverse {
+	@apply flex flex-row-reverse;
+}
+
+@utility row-reverse-start {
+	@apply flex flex-row-reverse items-start;
+}
+
+@utility row-reverse-center {
+	@apply flex flex-row-reverse items-center;
+}
+
+@utility row-reverse-end {
+	@apply flex flex-row-reverse items-end;
+}
+
+@utility center {
+	@apply flex items-center justify-center;
+}
+
+@utility wrap {
+	@apply flex flex-wrap;
+}
+
+@utility gap-inherit {
+	gap: inherit;
+}
+
+@utility scale-99 {
+	--tw-scale-x: 99%;
+	--tw-scale-y: 99%;
+	--tw-scale-z: 99%;
+	scale: var(--tw-scale-x) var(--tw-scale-y);
+}
+
+.corner-superellipse\/1\.125 {
+	corner-shape: superellipse(1.125);
+}

@@ -3,7 +3,7 @@ import '@/assets/globals.css'
 
 export const metadata: Metadata = {
 	title: 'mts',
-	description: 'mts'
+	description: 'mts',
 }
 
 type LayoutProps = Readonly<{

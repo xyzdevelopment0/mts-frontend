@@ -1,1 +1,5 @@
 @import 'tailwindcss';
+
+@import './src/colors.css';
+@import './src/typography.css';
+@import './src/layout.css';
