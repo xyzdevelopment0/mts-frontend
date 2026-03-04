@@ -8,15 +8,28 @@ interface Context {
 	params: Promise<{ action: string }>
 }
 
-const normalizeSetCookie = (setCookie: string, host: string) => {
+const isLocalHost = (host: string) => {
 	const hostname = host.split(':')[0]
-	if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-		return setCookie
+	return hostname === 'localhost' || hostname === '127.0.0.1'
+}
+
+const normalizeSetCookie = (
+	setCookie: string,
+	options: { localHost: boolean; https: boolean }
+) => {
+	let normalized = setCookie
+		.replace(/;\s*Domain=[^;]*/gi, '')
+		.replace(/;\s*SameSite=None/gi, '; SameSite=Lax')
+
+	if (options.localHost || !options.https) {
+		return normalized.replace(/;\s*Secure/gi, '')
 	}
 
-	return setCookie
-		.replace(/;\s*Secure/gi, '')
-		.replace(/;\s*SameSite=None/gi, '; SameSite=Lax')
+	if (!/;\s*Secure/i.test(normalized)) {
+		normalized = `${normalized}; Secure`
+	}
+
+	return normalized
 }
 
 export const POST = async (request: Request, context: Context) => {
@@ -46,10 +59,17 @@ export const POST = async (request: Request, context: Context) => {
 	if (responseContentType) {
 		headers.set('content-type', responseContentType)
 	}
-	const setCookie = response.headers.get('set-cookie')
-	if (setCookie) {
-		const host = request.headers.get('host') ?? ''
-		headers.set('set-cookie', normalizeSetCookie(setCookie, host))
+
+	const host = request.headers.get('host') ?? ''
+	const https = (request.headers.get('x-forwarded-proto') ?? 'http') === 'https'
+	for (const setCookie of response.headers.getSetCookie()) {
+		headers.append(
+			'set-cookie',
+			normalizeSetCookie(setCookie, {
+				localHost: isLocalHost(host),
+				https,
+			})
+		)
 	}
 
 	return new Response(response.body, {
