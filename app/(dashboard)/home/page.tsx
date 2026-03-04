@@ -2,7 +2,7 @@ import { listInstancesQuery } from '@/api/queries/instances'
 
 const HomePage = async () => {
 	const response = await listInstancesQuery()
-	console.log(response.data)
+	const debugText = JSON.stringify(response.data, null, 2)
 
 	return (
 		<main className='col-center min-h-dvh justify-center gap-2 p-6'>
@@ -10,6 +10,7 @@ const HomePage = async () => {
 			<p className='text-fg-2 text-sm'>
 				Добро пожаловать в облачную панель управления.
 			</p>
+			<pre className='text-fg-2 w-full overflow-auto text-xs'>{debugText}</pre>
 		</main>
 	)
 }
