@@ -6,7 +6,7 @@ import { Progress } from '../components/progress'
 import { useRegister } from '../store'
 
 export const RegisterStep2 = () => {
-	const { email, nextStep } = useRegister()
+	const { email, name, set, nextStep } = useRegister()
 	const profileInitial = email.trim().charAt(0).toUpperCase() || 'C'
 
 	return (
@@ -24,7 +24,14 @@ export const RegisterStep2 = () => {
 					nextStep()
 				}}
 			>
-				<Input autoFocus placeholder='Ваше имя' type='text' />
+				<Input
+					autoFocus
+					placeholder='Ваше имя'
+					type='text'
+					value={name}
+					onChange={event => set({ name: event.target.value })}
+					required
+				/>
 				<Button className='w-full' type='submit'>
 					Продолжить
 				</Button>

@@ -7,10 +7,14 @@ interface State {
 	step: RegisterStep
 	email: string
 	password: string
+	name: string
+	tenantName: string
 }
 
 interface Actions {
-	set: (state: Partial<Pick<State, 'email' | 'password'>>) => void
+	set: (
+		state: Partial<Pick<State, 'email' | 'password' | 'name' | 'tenantName'>>
+	) => void
 	nextStep: () => void
 }
 
@@ -22,6 +26,8 @@ const createRegisterStore = () =>
 		step: 1,
 		email: '',
 		password: '',
+		name: '',
+		tenantName: '',
 		set: state => set({ ...state }),
 		nextStep: () =>
 			set(state => ({

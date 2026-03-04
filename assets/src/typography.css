@@ -2,12 +2,8 @@
 	--font-family-sans: var(--font-sans);
 }
 
-@theme inline {
-	--font-weight-normal: 460;
-}
-
 @layer base {
 	body {
-		@apply text-fg-2 font-sans leading-5 font-normal tracking-tight;
+		@apply text-fg-2 font-sans leading-5 tracking-tight;
 	}
 }

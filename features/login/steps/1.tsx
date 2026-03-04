@@ -1,10 +1,16 @@
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 import { Headline } from '@/features/register/components/headline'
+import { loginRequest } from '@/utils/auth-api'
 import { useLogin } from '../store'
 
 export const LoginStep1 = () => {
+	const router = useRouter()
+	const [isPending, setIsPending] = useState(false)
+	const [error, setError] = useState('')
 	const { email, password, set } = useLogin()
 
 	return (
@@ -15,8 +21,29 @@ export const LoginStep1 = () => {
 			/>
 			<form
 				className='col w-full gap-6'
-				onSubmit={event => {
+				onSubmit={async event => {
 					event.preventDefault()
+					if (isPending) return
+					setError('')
+					setIsPending(true)
+
+					try {
+						const response = await loginRequest({
+							email: email.trim(),
+							password,
+						})
+
+						if (response.ok) {
+							router.push('/home')
+							return
+						}
+
+						setError('Не удалось войти. Проверьте данные и попробуйте снова.')
+					} catch {
+						setError('Не удалось войти. Проверьте данные и попробуйте снова.')
+					} finally {
+						setIsPending(false)
+					}
 				}}
 			>
 				<div className='col gap-3'>
@@ -38,9 +65,14 @@ export const LoginStep1 = () => {
 						required
 					/>
 				</div>
-				<Button className='w-full' type='submit'>
-					Войти
-				</Button>
+				<div className='col gap-2'>
+					<Button className='w-full' type='submit' disabled={isPending}>
+						{isPending ? 'Входим...' : 'Войти'}
+					</Button>
+					{error ? (
+						<p className='text-center text-sm text-red-500'>{error}</p>
+					) : null}
+				</div>
 			</form>
 			<p className='text-fg-2 text-sm'>
 				Нет аккаунта?{' '}

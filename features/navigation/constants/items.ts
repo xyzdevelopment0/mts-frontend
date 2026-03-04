@@ -2,7 +2,7 @@ import { Home01Icon, Settings01Icon } from '@hugeicons/core-free-icons'
 
 export const NAVIGATION_ITEMS = [
 	{
-		href: '/',
+		href: '/home',
 		icon: Home01Icon,
 		label: '0',
 	},
