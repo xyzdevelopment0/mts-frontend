@@ -74,6 +74,10 @@
 	gap: inherit;
 }
 
+@utility pb-safe-offset-4 {
+	padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
+}
+
 @utility scale-99 {
 	--tw-scale-x: 99%;
 	--tw-scale-y: 99%;
@@ -83,4 +87,8 @@
 
 .corner-superellipse\/1\.125 {
 	corner-shape: superellipse(1.125);
+}
+
+.corner-superellipse\/1\.25 {
+	corner-shape: superellipse(1.25);
 }

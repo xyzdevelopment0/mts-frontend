@@ -1,14 +1,7 @@
-import { Button } from '@/components/button'
-import { Input } from '@/components/input'
-
 const HomePage = () => (
-	<main className='grid min-h-dvh place-items-center p-6'>
-		<div className='w-full max-w-md'>
-			<form className='col gap-4'>
-				<Input id='name' placeholder='Project name' defaultValue='Acme' />
-				<Button type='submit'>Create project</Button>
-			</form>
-		</div>
+	<main className='col-center min-h-dvh justify-center gap-2 p-6'>
+		<h1 className='text-fg-4 text-2xl font-semibold'>Home</h1>
+		<p className='text-fg-2 text-sm'>This is a sample home page.</p>
 	</main>
 )
 
