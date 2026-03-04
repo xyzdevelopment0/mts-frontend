@@ -28,7 +28,7 @@ export const HomeInstance = ({ item, imageCode }: InstanceProps) => (
 	<Link
 		href={`/instance/${item.id}`}
 		className={cn(
-			'rounded-xl p-4 transition-colors',
+			'rounded-2xl p-6 transition-colors',
 			'bg-bg-2 hover:bg-bg-3 aspect-[2/1]',
 			'focus-visible:ring-purple-2 focus-visible:ring-2 focus-visible:outline-none'
 		)}

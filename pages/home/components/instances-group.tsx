@@ -21,7 +21,7 @@ export const InstancesGroup = ({
 	return (
 		<section className='col gap-2 md:col-span-2 lg:col-span-3'>
 			<Label icon={icon}>{label}</Label>
-			<div className='grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3'>
+			<div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
 				{items.map(item => (
 					<HomeInstance
 						key={item.id}

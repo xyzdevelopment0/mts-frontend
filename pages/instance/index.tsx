@@ -22,7 +22,7 @@ export const InstanceDetails = async ({ id }: InstanceDetailsProps) => {
 	}
 
 	return (
-		<main className='col flex-1 gap-10'>
+		<main className='col flex-1 gap-12'>
 			<div className='col-center gap-6'>
 				<Headline
 					title={
