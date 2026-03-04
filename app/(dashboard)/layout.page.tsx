@@ -19,7 +19,7 @@ const DashboardLayout = async ({ children }: LayoutProps) => {
 		<DashboardProvider data={response.data}>
 			<Header />
 			<div className='bg-bg-1 min-h-dvh pb-24'>
-				<div className='col mx-auto min-h-dvh w-full max-w-[800px] px-6 pt-[calc(env(safe-area-inset-top)+5rem)] pb-10'>
+				<div className='col mx-auto mt-10 min-h-dvh w-full max-w-[800px] px-6 pt-[calc(env(safe-area-inset-top)+5rem)] pb-10'>
 					{children}
 				</div>
 			</div>

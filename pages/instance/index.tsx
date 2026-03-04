@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getInstanceQuery } from '@/api/queries/instance'
 import { Headline } from '@/components/headline'
+import { ActionButtons } from './components/action-buttons'
 import { CpuLiveChart } from './components/cpu-live-chart'
 import { RamLiveChart } from './components/ram-live-chart'
 import { InstanceTitle } from './components/title'
@@ -21,16 +22,19 @@ export const InstanceDetails = async ({ id }: InstanceDetailsProps) => {
 	}
 
 	return (
-		<main className='col flex-1 gap-8'>
-			<Headline
-				title={
-					<InstanceTitle
-						name={response.data.name}
-						imageId={response.data.image_id}
-					/>
-				}
-				description={response.data.ip_address}
-			/>
+		<main className='col flex-1 gap-10'>
+			<div className='col-center gap-6'>
+				<Headline
+					title={
+						<InstanceTitle
+							name={response.data.name}
+							imageId={response.data.image_id}
+						/>
+					}
+					description={response.data.ip_address}
+				/>
+				<ActionButtons />
+			</div>
 			<section key={id} className='col lg:row flex-1 gap-4'>
 				<CpuLiveChart />
 				<RamLiveChart />
