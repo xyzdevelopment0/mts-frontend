@@ -11,7 +11,7 @@ const RegisterContent = () => {
 
 	return (
 		<main className='bg-bg-1 min-h-dvh md:grid md:grid-cols-2'>
-			<section className='col-center min-h-dvh px-6 py-10 md:justify-center'>
+			<section className='col-center min-h-dvh justify-center px-6 py-10'>
 				<Step />
 			</section>
 			<section
