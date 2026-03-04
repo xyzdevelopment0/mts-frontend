@@ -17,7 +17,11 @@ const CREATE_INSTANCE_STEPS = [{ id: 1 }, { id: 2 }, { id: 3 }] as const
 const CREATE_INSTANCE_ERROR_MESSAGE =
 	'Не удалось создать инстанс. Попробуйте снова.'
 
-const CreateInstanceModelContent = () => {
+interface Props {
+	onSuccess?: () => void
+}
+
+const CreateInstanceModelContent = ({ onSuccess }: Props) => {
 	const router = useRouter()
 	const { data } = useDashboard()
 	const { step, name, flavorId, imageId, error, isPending, set, nextStep } =
@@ -128,6 +132,7 @@ const CreateInstanceModelContent = () => {
 
 						if (response.ok && response.data) {
 							router.push(`/instance/${response.data.instance_id}`)
+							onSuccess?.()
 							return
 						}
 
@@ -164,8 +169,8 @@ const CreateInstanceModelContent = () => {
 	)
 }
 
-export const CreateInstanceModel = () => (
+export const CreateInstanceModel = ({ onSuccess }: Props) => (
 	<CreateInstanceModelProvider>
-		<CreateInstanceModelContent />
+		<CreateInstanceModelContent onSuccess={onSuccess} />
 	</CreateInstanceModelProvider>
 )
