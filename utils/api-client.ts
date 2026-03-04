@@ -14,9 +14,7 @@ interface ApiResponse<T> {
 
 const RETRYABLE_CONTENT_STATUSES = new Set([400, 415, 422])
 
-const baseUrl = (
-	process.env.NEXT_PUBLIC_API_BASE_URL ?? 'https://formatis.online'
-).replace(/\/$/, '')
+const baseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL ?? '').replace(/\/$/, '')
 
 const request = async <T>({
 	method,
