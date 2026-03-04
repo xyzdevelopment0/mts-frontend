@@ -2,9 +2,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { loginRequest } from '@/api/endpoints/auth'
+import { AuthHeadline } from '@/components/auth-headline'
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
-import { Headline } from '@/features/register/components/headline'
 import { useLogin } from '../store'
 
 export const LoginStep1 = () => {
@@ -15,7 +15,7 @@ export const LoginStep1 = () => {
 
 	return (
 		<div className='col-center w-full max-w-[22rem] gap-8'>
-			<Headline
+			<AuthHeadline
 				title='Вход'
 				description='Управляйте облачной инфраструктурой в одном месте.'
 			/>

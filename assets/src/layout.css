@@ -31,19 +31,19 @@
 }
 
 @utility row {
-	@apply flex;
+	@apply flex flex-row;
 }
 
 @utility row-start {
-	@apply flex items-start;
+	@apply flex flex-row items-start;
 }
 
 @utility row-center {
-	@apply flex items-center;
+	@apply flex flex-row items-center;
 }
 
 @utility row-end {
-	@apply flex items-end;
+	@apply flex flex-row items-end;
 }
 
 @utility row-reverse {

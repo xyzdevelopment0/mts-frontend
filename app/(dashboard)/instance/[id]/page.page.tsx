@@ -1,4 +1,4 @@
-import { InstanceDetails } from '@/features/instance'
+import { InstanceDetails } from '@/pages/instance'
 
 type InstancePageProps = Readonly<{
 	params: Promise<{
