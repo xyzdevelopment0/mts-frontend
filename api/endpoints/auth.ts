@@ -1,4 +1,4 @@
-import { apiClient } from '@/utils/api-client'
+import { createEndpoint } from '@/api/utils/create-endpoint'
 
 interface LoginPayload {
 	email: string
@@ -29,35 +29,35 @@ const toUsernameForm = (payload: LoginPayload) => {
 }
 
 export const loginRequest = async (payload: LoginPayload) => {
-	const jsonResponse = await apiClient.postJson<AuthResponse>(
+	const jsonResponse = await createEndpoint.postJson<AuthResponse>(
 		'/api/v1/auth/login',
 		payload
 	)
 
 	if (
 		jsonResponse.ok ||
-		!apiClient.isRetryableContentStatus(jsonResponse.status)
+		!createEndpoint.isRetryableContentStatus(jsonResponse.status)
 	) {
 		return jsonResponse
 	}
 
-	const emailFormResponse = await apiClient.postForm<AuthResponse>(
+	const emailFormResponse = await createEndpoint.postForm<AuthResponse>(
 		'/api/v1/auth/login',
 		toEmailForm(payload)
 	)
 
 	if (
 		emailFormResponse.ok ||
-		!apiClient.isRetryableContentStatus(emailFormResponse.status)
+		!createEndpoint.isRetryableContentStatus(emailFormResponse.status)
 	) {
 		return emailFormResponse
 	}
 
-	return apiClient.postForm<AuthResponse>(
+	return createEndpoint.postForm<AuthResponse>(
 		'/api/v1/auth/login',
 		toUsernameForm(payload)
 	)
 }
 
 export const registerRequest = (payload: RegisterPayload) =>
-	apiClient.postJson<AuthResponse>('/api/v1/auth/register', payload)
+	createEndpoint.postJson<AuthResponse>('/api/v1/auth/register', payload)

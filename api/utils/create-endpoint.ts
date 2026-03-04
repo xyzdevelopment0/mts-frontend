@@ -6,7 +6,7 @@ interface RequestOptions {
 	body?: RequestBody
 }
 
-interface ApiResponse<T> {
+export interface EndpointResponse<T> {
 	ok: boolean
 	status: number
 	data: T | null
@@ -20,15 +20,24 @@ const request = async <T>({
 	method,
 	path,
 	body,
-}: RequestOptions): Promise<ApiResponse<T>> => {
+}: RequestOptions): Promise<EndpointResponse<T>> => {
 	const isForm = body instanceof URLSearchParams
+	const headers =
+		body === undefined
+			? undefined
+			: isForm
+				? { 'Content-Type': 'application/x-www-form-urlencoded' }
+				: { 'Content-Type': 'application/json' }
 	const response = await fetch(baseUrl + path, {
 		method,
 		credentials: 'include',
-		headers: isForm
-			? { 'Content-Type': 'application/x-www-form-urlencoded' }
-			: { 'Content-Type': 'application/json' },
-		body: body ? (isForm ? body.toString() : JSON.stringify(body)) : undefined,
+		headers,
+		body:
+			body === undefined
+				? undefined
+				: isForm
+					? body.toString()
+					: JSON.stringify(body),
 	})
 
 	let data: T | null = null
@@ -48,7 +57,8 @@ const request = async <T>({
 	}
 }
 
-export const apiClient = {
+export const createEndpoint = {
+	getJson: <T>(path: string) => request<T>({ method: 'GET', path }),
 	postJson: <T>(path: string, body: unknown) =>
 		request<T>({ method: 'POST', path, body }),
 	postForm: <T>(path: string, body: URLSearchParams) =>

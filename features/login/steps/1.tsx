@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { loginRequest } from '@/api/endpoints/auth'
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 import { Headline } from '@/features/register/components/headline'
-import { loginRequest } from '@/utils/auth-api'
 import { useLogin } from '../store'
 
 export const LoginStep1 = () => {
