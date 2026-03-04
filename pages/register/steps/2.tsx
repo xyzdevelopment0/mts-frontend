@@ -1,8 +1,7 @@
-import { AuthHeadline } from '@/components/auth-headline'
+import { Headline } from '@/components/headline'
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 import { RegisterAvatar } from '../components/avatar'
-import { Progress } from '../components/progress'
 import { useRegister } from '../store'
 
 export const RegisterStep2 = () => {
@@ -10,9 +9,8 @@ export const RegisterStep2 = () => {
 	const profileInitial = email.trim().charAt(0).toUpperCase() || 'C'
 
 	return (
-		<div className='col-center w-full max-w-[22rem] gap-8'>
-			<Progress step={2} />
-			<AuthHeadline
+		<>
+			<Headline
 				title='Настройте аккаунт'
 				description='Добавьте имя и фото профиля.'
 			/>
@@ -36,6 +34,6 @@ export const RegisterStep2 = () => {
 					Продолжить
 				</Button>
 			</form>
-		</div>
+		</>
 	)
 }

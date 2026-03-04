@@ -4,13 +4,15 @@ export const NAVIGATION_ITEMS = [
 	{
 		href: '/home',
 		icon: Home01Icon,
-		label: '0',
 	},
 	{
 		href: '/settings',
 		icon: Settings01Icon,
-		label: undefined,
 	},
 ] as const
 
-export type NavigationItem = (typeof NAVIGATION_ITEMS)[number]
+export type NavigationItem = {
+	href: (typeof NAVIGATION_ITEMS)[number]['href']
+	icon: (typeof NAVIGATION_ITEMS)[number]['icon']
+	label?: string
+}

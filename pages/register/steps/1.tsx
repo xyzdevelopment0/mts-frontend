@@ -1,17 +1,15 @@
-import { AuthHeadline } from '@/components/auth-headline'
+import { Headline } from '@/components/headline'
 import Link from 'next/link'
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
-import { Progress } from '../components/progress'
 import { useRegister } from '../store'
 
 export const RegisterStep1 = () => {
 	const { email, password, set, nextStep } = useRegister()
 
 	return (
-		<div className='col-center w-full max-w-[22rem] gap-8'>
-			<Progress step={1} />
-			<AuthHeadline
+		<>
+			<Headline
 				title='Регистрация'
 				description='Управляйте облачной инфраструктурой в одном месте.'
 			/>
@@ -51,6 +49,6 @@ export const RegisterStep1 = () => {
 					Войти
 				</Link>
 			</p>
-		</div>
+		</>
 	)
 }

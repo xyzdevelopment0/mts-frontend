@@ -1,11 +1,10 @@
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { registerRequest } from '@/api/endpoints/auth'
-import { AuthHeadline } from '@/components/auth-headline'
+import { Headline } from '@/components/headline'
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 import { RegisterAvatar } from '../components/avatar'
-import { Progress } from '../components/progress'
 import { useRegister } from '../store'
 
 export const RegisterStep3 = () => {
@@ -19,9 +18,8 @@ export const RegisterStep3 = () => {
 		'W'
 
 	return (
-		<div className='col-center w-full max-w-[22rem] gap-8'>
-			<Progress step={3} />
-			<AuthHeadline
+		<>
+			<Headline
 				title='Настройте рабочее пространство'
 				description='Добавьте название и аватар рабочего пространства.'
 			/>
@@ -72,6 +70,6 @@ export const RegisterStep3 = () => {
 					) : null}
 				</div>
 			</form>
-		</div>
+		</>
 	)
 }

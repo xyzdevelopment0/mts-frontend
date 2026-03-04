@@ -5,6 +5,18 @@ export type InstanceStatus =
 	| 'ERROR'
 	| 'TERMINATED'
 
+export interface CreateInstancePayload {
+	name: string
+	flavor_id: number
+	image_id: number
+}
+
+export interface CreateInstanceResponse {
+	instance_id: number
+	provisioning_operation_id: number
+	status: 'PROVISIONING'
+}
+
 export interface Instance {
 	id: number
 	tenant_id: number
