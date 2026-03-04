@@ -4,10 +4,12 @@ export const NAVIGATION_ITEMS = [
 	{
 		href: '/',
 		icon: Home01Icon,
+		label: '0',
 	},
 	{
 		href: '/settings',
 		icon: Settings01Icon,
+		label: undefined,
 	},
 ] as const
 

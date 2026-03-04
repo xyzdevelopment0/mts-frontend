@@ -9,7 +9,11 @@ import { useItemActive } from '../hooks/item-active'
 
 type NavigationItemProps = NavigationItem
 
-export const NavigationItemView = ({ href, icon }: NavigationItemProps) => {
+export const NavigationItemView = ({
+	href,
+	icon,
+	label,
+}: NavigationItemProps) => {
 	const active = useItemActive(href)
 
 	return (
@@ -34,8 +38,13 @@ export const NavigationItemView = ({ href, icon }: NavigationItemProps) => {
 					className='corner-superellipse/1.25 bg-purple-4/15 absolute inset-0 z-0 rounded-full'
 				/>
 			) : null}
-			<span className='row-center relative z-10'>
+			<span className='row-center relative z-10 gap-1'>
 				<HugeiconsIcon icon={icon} size={20} strokeWidth={1.5} />
+				{label ? (
+					<span className='inline-flex items-center'>
+						<span>{label}</span>
+					</span>
+				) : null}
 			</span>
 		</Link>
 	)
