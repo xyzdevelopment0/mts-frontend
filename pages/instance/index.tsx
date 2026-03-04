@@ -3,6 +3,7 @@ import { getInstanceQuery } from '@/api/queries/instance'
 import { Headline } from '@/components/headline'
 import { ActionButtons } from './components/action-buttons'
 import { CpuLiveChart } from './components/cpu-live-chart'
+import { InstanceNotes } from './components/notes'
 import { RamLiveChart } from './components/ram-live-chart'
 import { InstanceTitle } from './components/title'
 
@@ -23,6 +24,7 @@ export const InstanceDetails = async ({ id }: InstanceDetailsProps) => {
 
 	return (
 		<main className='col flex-1 gap-12'>
+			<InstanceNotes />
 			<div className='col-center gap-6'>
 				<Headline
 					title={

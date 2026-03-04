@@ -15,7 +15,7 @@ import { CreateInstanceModelProvider, useCreateInstanceModel } from './store'
 const CREATE_INSTANCE_STEPS = [{ id: 1 }, { id: 2 }, { id: 3 }] as const
 
 const CREATE_INSTANCE_ERROR_MESSAGE =
-	'Не удалось создать инстанс. Попробуйте снова.'
+	'Не удалось создать сервис. Попробуйте снова.'
 
 interface Props {
 	onSuccess?: () => void
@@ -157,7 +157,7 @@ const CreateInstanceModelContent = ({ onSuccess }: Props) => {
 						{step === 3
 							? isPending
 								? 'Создаем...'
-								: 'Создать инстанс'
+								: 'Создать сервис'
 							: 'Продолжить'}
 					</Button>
 					{error ? (

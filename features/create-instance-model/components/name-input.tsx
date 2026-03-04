@@ -7,7 +7,7 @@ type NameInputProps = {
 
 export const NameInput = ({ value, onChange }: NameInputProps) => (
 	<div className='col gap-2'>
-		<span className='text-fg-4 text-sm font-medium'>Название инстанса</span>
+		<span className='text-fg-4 text-sm font-medium'>Название сервиса</span>
 		<Input
 			autoFocus
 			placeholder='Например, prod-web-01'

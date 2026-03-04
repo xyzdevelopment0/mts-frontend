@@ -15,7 +15,7 @@ export const EmptyState = ({
 }: EmptyStateProps) => (
 	<div
 		className={cn(
-			'col-center mx-auto flex-1 justify-center gap-7 text-center',
+			'col-center mx-auto flex-1 justify-start gap-7 text-center',
 			'w-full max-w-[23rem]'
 		)}
 	>
