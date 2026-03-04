@@ -29,12 +29,7 @@ export const NavigationItemView = ({
 			{active ? (
 				<motion.span
 					layoutId='sidebar-indicator'
-					transition={{
-						type: 'spring',
-						stiffness: 520,
-						damping: 38,
-						mass: 0.45,
-					}}
+					transition={{ type: 'spring', duration: 0.3 }}
 					className='corner-superellipse/1.25 bg-purple-4/15 absolute inset-0 z-0 rounded-full'
 				/>
 			) : null}
