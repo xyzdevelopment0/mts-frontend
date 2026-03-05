@@ -39,9 +39,9 @@ export const LoginStep1 = () => {
 						}
 
 						setError('Не удалось войти. Проверьте данные и попробуйте снова.')
+						setIsPending(false)
 					} catch {
 						setError('Не удалось войти. Проверьте данные и попробуйте снова.')
-					} finally {
 						setIsPending(false)
 					}
 				}}

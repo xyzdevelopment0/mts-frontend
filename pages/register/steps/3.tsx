@@ -46,9 +46,9 @@ export const RegisterStep3 = () => {
 						}
 
 						setError('Не удалось завершить регистрацию. Попробуйте снова.')
+						setIsPending(false)
 					} catch {
 						setError('Не удалось завершить регистрацию. Попробуйте снова.')
-					} finally {
 						setIsPending(false)
 					}
 				}}

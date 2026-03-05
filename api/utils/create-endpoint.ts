@@ -18,7 +18,7 @@ const externalBaseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL ?? '').replace(
 	/\/$/,
 	''
 )
-const baseUrl = typeof window === 'undefined' ? externalBaseUrl : ''
+const baseUrl = externalBaseUrl
 
 const request = async <T>({
 	method,
