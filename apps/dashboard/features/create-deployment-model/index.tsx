@@ -18,6 +18,8 @@ import {
 
 const CREATE_DEPLOYMENT_ERROR_MESSAGE =
 	'Не удалось запустить авто-деплой. Попробуйте снова.'
+const CREATE_DEPLOYMENT_TENANT_ERROR_MESSAGE =
+	'Не удалось определить рабочее пространство. Обновите страницу и попробуйте снова.'
 
 type CreateDeploymentModelProps = {
 	onCreated?: (deploymentId: string) => void
@@ -34,6 +36,8 @@ const CreateDeploymentModelContent = ({
 		useCreateDeploymentModel()
 	const normalizedGithubUrl = githubUrl.trim()
 	const isGithubUrlValid = isValidPublicGithubUrl(normalizedGithubUrl)
+	const tenantId = data.tenant.id ?? data.tenant.instances[0]?.tenant_id
+	const isTenantIdValid = typeof tenantId === 'number' && tenantId > 0
 
 	const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
@@ -49,7 +53,12 @@ const CreateDeploymentModelContent = ({
 			return
 		}
 
-		const tenantId = data.tenant.id ?? data.tenant.instances[0]?.tenant_id ?? 0
+		if (!isTenantIdValid) {
+			set({
+				error: CREATE_DEPLOYMENT_TENANT_ERROR_MESSAGE,
+			})
+			return
+		}
 
 		set({
 			inputError: '',
@@ -119,7 +128,7 @@ const CreateDeploymentModelContent = ({
 					<Button
 						className='w-full'
 						type='submit'
-						disabled={!isGithubUrlValid || isSubmitting}
+						disabled={!isGithubUrlValid || !isTenantIdValid || isSubmitting}
 					>
 						{isSubmitting ? 'Запускаем...' : 'Запустить деплой'}
 					</Button>
