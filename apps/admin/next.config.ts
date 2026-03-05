@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
 	pageExtensions: ['page.tsx', 'page.ts', 'page.jsx', 'page.js'],
 	transpilePackages: [
 		'@repo/api-client',
+		'@repo/auth',
 		'@repo/assets',
 		'@repo/shell',
 		'@repo/types',

@@ -13,7 +13,9 @@ export interface QueryResponse<T> {
 	data: T | null
 }
 
-const baseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL ?? '').replace(/\/$/, '')
+const baseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL ?? '')
+	.replace(/\/api\/v1\/?$/, '')
+	.replace(/\/$/, '')
 
 const toSearchParams = (params?: QueryOptions['params']) => {
 	if (!params) return ''

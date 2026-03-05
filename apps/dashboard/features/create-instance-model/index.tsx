@@ -10,22 +10,33 @@ import { useDashboard } from '@/features/dashboard'
 import { FlavorSelect } from './components/flavor-select'
 import { ImageSelect } from './components/image-select'
 import { NameInput } from './components/name-input'
+import { SshAccess } from './components/ssh-access'
 import { CreateInstanceModelProvider, useCreateInstanceModel } from './store'
 
-const CREATE_INSTANCE_STEPS = [{ id: 1 }, { id: 2 }, { id: 3 }] as const
+const CREATE_INSTANCE_STEPS = [
+	{ id: 1 },
+	{ id: 2 },
+	{ id: 3 },
+	{ id: 4 },
+] as const
 
 const CREATE_INSTANCE_ERROR_MESSAGE =
 	'Не удалось создать сервис. Попробуйте снова.'
 
-interface Props {
-	onSuccess?: () => void
-}
-
-const CreateInstanceModelContent = ({ onSuccess }: Props) => {
+const CreateInstanceModelContent = () => {
 	const router = useRouter()
 	const { data } = useDashboard()
-	const { step, name, flavorId, imageId, error, isPending, set, nextStep } =
-		useCreateInstanceModel()
+	const {
+		step,
+		name,
+		flavorId,
+		imageId,
+		createdInstance,
+		error,
+		isPending,
+		set,
+		nextStep,
+	} = useCreateInstanceModel()
 	const activeImages = useMemo(
 		() => data.images.filter(item => item.is_active),
 		[data.images]
@@ -70,79 +81,114 @@ const CreateInstanceModelContent = ({ onSuccess }: Props) => {
 				value={flavorId}
 				onChange={value => set({ flavorId: value })}
 			/>
-		) : (
+		) : step === 3 ? (
 			<ImageSelect
 				items={activeImages}
 				value={imageId}
 				onChange={value => set({ imageId: value })}
 			/>
-		)
+		) : createdInstance ? (
+			<SshAccess
+				sshUser={createdInstance.ssh_user}
+				sshPass={createdInstance.ssh_pass}
+				sshHost={createdInstance.ssh_host}
+				sshPort={createdInstance.ssh_port}
+			/>
+		) : null
 
 	const stepTitle =
 		step === 1
 			? 'Создание сервиса'
 			: step === 2
 				? 'Выбор конфигурации'
-				: 'Выбор образа'
+				: step === 3
+					? 'Выбор образа'
+					: 'SSH доступ'
 	const stepDescription =
 		step === 1
 			? 'Укажите имя будущего сервера.'
 			: step === 2
 				? 'Определите вычислительные ресурсы.'
-				: 'Определите базовую операционную систему.'
+				: step === 3
+					? 'Определите базовую операционную систему.'
+					: 'Скопируйте данные для подключения к серверу.'
 
 	const isStepValid =
 		step === 1
 			? name.trim().length > 0
 			: step === 2
 				? data.flavors.length > 0 && flavorId !== null
-				: activeImages.length > 0 && imageId !== null
+				: step === 3
+					? activeImages.length > 0 && imageId !== null
+					: createdInstance !== null
+
+	const submitLabel =
+		step === 3
+			? isPending
+				? 'Создаем...'
+				: 'Создать сервис'
+			: step === 4
+				? 'Открыть сервис'
+				: 'Продолжить'
+
+	const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+
+		if (!isStepValid || isPending) {
+			return
+		}
+
+		set({ error: '' })
+
+		if (step === 4) {
+			if (!createdInstance) {
+				return
+			}
+
+			router.push(`/instance/${createdInstance.instance_id}`)
+			return
+		}
+
+		if (step !== 3) {
+			nextStep()
+			return
+		}
+
+		if (flavorId === null || imageId === null) {
+			return
+		}
+
+		set({ isPending: true })
+
+		try {
+			const response = await createInstanceRequest({
+				name: name.trim(),
+				flavor_id: flavorId,
+				image_id: imageId,
+			})
+
+			if (response.ok && response.data) {
+				set({
+					createdInstance: response.data,
+					step: 4,
+				})
+				return
+			}
+
+			set({ error: CREATE_INSTANCE_ERROR_MESSAGE })
+		} catch {
+			set({ error: CREATE_INSTANCE_ERROR_MESSAGE })
+		} finally {
+			set({ isPending: false })
+		}
+	}
 
 	return (
 		<div className='col-center h-full w-full max-w-[22rem] gap-6'>
 			<Stepper items={CREATE_INSTANCE_STEPS} activeId={step} />
 			<form
 				className='col h-full w-full flex-1 justify-between gap-5'
-				onSubmit={async event => {
-					event.preventDefault()
-
-					if (!isStepValid || isPending) {
-						return
-					}
-
-					set({ error: '' })
-
-					if (step !== 3) {
-						nextStep()
-						return
-					}
-
-					if (flavorId === null || imageId === null) {
-						return
-					}
-
-					set({ isPending: true })
-
-					try {
-						const response = await createInstanceRequest({
-							name: name.trim(),
-							flavor_id: flavorId,
-							image_id: imageId,
-						})
-
-						if (response.ok && response.data) {
-							router.push(`/instance/${response.data.instance_id}`)
-							onSuccess?.()
-							return
-						}
-
-						set({ error: CREATE_INSTANCE_ERROR_MESSAGE })
-					} catch {
-						set({ error: CREATE_INSTANCE_ERROR_MESSAGE })
-					} finally {
-						set({ isPending: false })
-					}
-				}}
+				onSubmit={onSubmit}
 			>
 				<div className='col gap-5'>
 					<Headline title={stepTitle} description={stepDescription} />
@@ -154,11 +200,7 @@ const CreateInstanceModelContent = ({ onSuccess }: Props) => {
 						type='submit'
 						disabled={!isStepValid || isPending}
 					>
-						{step === 3
-							? isPending
-								? 'Создаем...'
-								: 'Создать сервис'
-							: 'Продолжить'}
+						{submitLabel}
 					</Button>
 					{error ? (
 						<p className='text-center text-sm text-red-500'>{error}</p>
@@ -169,8 +211,8 @@ const CreateInstanceModelContent = ({ onSuccess }: Props) => {
 	)
 }
 
-export const CreateInstanceModel = ({ onSuccess }: Props) => (
+export const CreateInstanceModel = () => (
 	<CreateInstanceModelProvider>
-		<CreateInstanceModelContent onSuccess={onSuccess} />
+		<CreateInstanceModelContent />
 	</CreateInstanceModelProvider>
 )

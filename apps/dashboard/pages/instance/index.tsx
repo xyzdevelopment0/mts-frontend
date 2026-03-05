@@ -1,6 +1,11 @@
 import { redirect } from 'next/navigation'
 import { getInstanceQuery } from '@repo/api-client/queries/instance'
 import { Headline } from '@repo/ui/headline'
+import {
+	SshHostSnippet,
+	SshPortSnippet,
+	SshUserSnippet,
+} from '@/features/instance-ssh-snippets'
 import { ActionButtons } from './components/action-buttons'
 import { CpuLiveChart } from './components/cpu-live-chart'
 import { DeployEmptyState } from './components/deploy-empty-state'
@@ -42,6 +47,13 @@ export const InstanceDetails = async ({ id }: InstanceDetailsProps) => {
 						/>
 					}
 				/>
+				<div className='col w-full max-w-[22rem] gap-3'>
+					<SshUserSnippet value={response.data.ssh_user} />
+					<div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
+						<SshHostSnippet value={response.data.ssh_host} />
+						<SshPortSnippet value={response.data.ssh_port} />
+					</div>
+				</div>
 				<ActionButtons />
 			</div>
 			<section key={id} className='col lg:row flex-1 gap-4'>

@@ -12,6 +12,7 @@ export type {
 export type {
 	CreateInstancePayload,
 	CreateInstanceResponse,
+	InstanceDetails,
 	Instance,
 	InstanceStatus,
 } from './instance'

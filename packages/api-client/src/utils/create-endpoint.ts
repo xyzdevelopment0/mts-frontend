@@ -14,11 +14,9 @@ export interface EndpointResponse<T> {
 
 const RETRYABLE_CONTENT_STATUSES = new Set([400, 415, 422])
 
-const externalBaseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL ?? '').replace(
-	/\/$/,
-	''
-)
-const baseUrl = externalBaseUrl
+const baseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL ?? '')
+	.replace(/\/api\/v1\/?$/, '')
+	.replace(/\/$/, '')
 
 const request = async <T>({
 	method,

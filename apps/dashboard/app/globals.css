@@ -1,0 +1,4 @@
+@import '@repo/assets/theme.css';
+
+@source '../**/*.{ts,tsx}';
+@source '../../../packages/**/*.{ts,tsx}';

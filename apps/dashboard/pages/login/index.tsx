@@ -1,12 +1,3 @@
-'use client'
+import { Login as SharedLogin } from '@repo/auth/login'
 
-import { LoginProvider } from './store'
-import { LoginStep1 } from './steps/1'
-
-const LoginContent = () => <LoginStep1 />
-
-export const Login = () => (
-	<LoginProvider>
-		<LoginContent />
-	</LoginProvider>
-)
+export const Login = () => <SharedLogin successHref='/home' />

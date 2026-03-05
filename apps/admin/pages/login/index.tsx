@@ -1,87 +1,10 @@
-'use client'
+import { Login as SharedLogin } from '@repo/auth/login'
 
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { loginRequest } from '@repo/api-client/endpoints/auth'
-import { Button } from '@repo/ui/button'
-import { Headline } from '@repo/ui/headline'
-import { Input } from '@repo/ui/input'
+const dashboardOrigin = (
+	process.env.NEXT_PUBLIC_DASHBOARD_ORIGIN ??
+	process.env.NEXT_PUBLIC_APP_ORIGIN ??
+	''
+).replace(/\/$/, '')
+const successHref = dashboardOrigin ? `${dashboardOrigin}/home` : '/home'
 
-export const Login = () => {
-	const router = useRouter()
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
-	const [isPending, setIsPending] = useState(false)
-	const [error, setError] = useState('')
-
-	return (
-		<div className='col-center w-full max-w-[22rem] gap-8'>
-			<Headline
-				title='Вход в админ-панель'
-				description='Управляйте административной частью платформы.'
-			/>
-			<form
-				className='col w-full gap-6'
-				onSubmit={async event => {
-					event.preventDefault()
-					if (isPending) return
-					setError('')
-					setIsPending(true)
-
-					try {
-						const response = await loginRequest({
-							email: email.trim(),
-							password,
-						})
-
-						if (response.ok) {
-							router.push('/home')
-							return
-						}
-
-						setError('Не удалось войти. Проверьте данные и попробуйте снова.')
-					} catch {
-						setError('Не удалось войти. Проверьте данные и попробуйте снова.')
-					} finally {
-						setIsPending(false)
-					}
-				}}
-			>
-				<div className='col gap-3'>
-					<Input
-						autoFocus
-						autoComplete='email'
-						placeholder='Электронная почта'
-						type='email'
-						value={email}
-						onChange={event => setEmail(event.target.value)}
-						required
-					/>
-					<Input
-						autoComplete='current-password'
-						placeholder='Пароль'
-						type='password'
-						value={password}
-						onChange={event => setPassword(event.target.value)}
-						required
-					/>
-				</div>
-				<div className='col gap-2'>
-					<Button className='w-full' type='submit' disabled={isPending}>
-						{isPending ? 'Входим...' : 'Войти'}
-					</Button>
-					{error ? (
-						<p className='text-center text-sm text-red-500'>{error}</p>
-					) : null}
-				</div>
-			</form>
-			<p className='text-fg-2 text-sm'>
-				Нет аккаунта?{' '}
-				<Link className='text-purple-4' href='/register'>
-					Зарегистрироваться
-				</Link>
-			</p>
-		</div>
-	)
-}
+export const Login = () => <SharedLogin successHref={successHref} />

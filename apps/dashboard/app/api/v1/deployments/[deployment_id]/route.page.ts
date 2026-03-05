@@ -1,7 +1,6 @@
-const apiBaseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL ?? '').replace(
-	/\/$/,
-	''
-)
+const apiBaseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL ?? '')
+	.replace(/\/api\/v1\/?$/, '')
+	.replace(/\/$/, '')
 
 interface Context {
 	params: Promise<{ deployment_id: string }>

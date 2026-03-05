@@ -1,3 +1,4 @@
+import { HeaderAdminPanelButton } from './components/admin-panel-button'
 import { HeaderContainer } from '@repo/shell/header-container'
 import { HeaderCreateInstanceButton } from './components/create-instance-button'
 import { HeaderUser } from './components/user'
@@ -8,6 +9,7 @@ export const Header = () => (
 		<HeaderWorkspace />
 		<div className='row-center gap-4'>
 			<HeaderCreateInstanceButton />
+			<HeaderAdminPanelButton />
 			<HeaderUser />
 		</div>
 	</HeaderContainer>

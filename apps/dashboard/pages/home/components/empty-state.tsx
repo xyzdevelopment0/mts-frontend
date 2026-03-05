@@ -38,7 +38,7 @@ export const HomeEmptyState = () => {
 			/>
 			<Modal open={open} onOpenChange={setOpen}>
 				<ModalMain className='items-center gap-0 px-6 pb-6'>
-					<CreateInstanceModel onSuccess={() => setOpen(false)} />
+					<CreateInstanceModel />
 				</ModalMain>
 			</Modal>
 		</>

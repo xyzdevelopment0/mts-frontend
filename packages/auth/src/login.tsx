@@ -1,17 +1,35 @@
+'use client'
+
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { loginRequest } from '@repo/api-client/endpoints/auth'
-import { Headline } from '@repo/ui/headline'
 import { Button } from '@repo/ui/button'
+import { Headline } from '@repo/ui/headline'
 import { Input } from '@repo/ui/input'
-import { useLogin } from '../store'
 
-export const LoginStep1 = () => {
+type LoginProps = {
+	successHref: string
+}
+
+const isAbsoluteHref = (href: string) =>
+	href.startsWith('http://') || href.startsWith('https://')
+
+const navigateTo = (href: string, push: (href: string) => void) => {
+	if (isAbsoluteHref(href)) {
+		window.location.assign(href)
+		return
+	}
+
+	push(href)
+}
+
+export const Login = ({ successHref }: LoginProps) => {
 	const router = useRouter()
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
 	const [isPending, setIsPending] = useState(false)
 	const [error, setError] = useState('')
-	const { email, password, set } = useLogin()
 
 	return (
 		<div className='col-center w-full max-w-[22rem] gap-8'>
@@ -34,14 +52,14 @@ export const LoginStep1 = () => {
 						})
 
 						if (response.ok) {
-							router.push('/home')
+							navigateTo(successHref, router.push)
 							return
 						}
 
 						setError('Не удалось войти. Проверьте данные и попробуйте снова.')
-						setIsPending(false)
 					} catch {
 						setError('Не удалось войти. Проверьте данные и попробуйте снова.')
+					} finally {
 						setIsPending(false)
 					}
 				}}
@@ -53,7 +71,7 @@ export const LoginStep1 = () => {
 						placeholder='Электронная почта'
 						type='email'
 						value={email}
-						onChange={event => set({ email: event.target.value })}
+						onChange={event => setEmail(event.target.value)}
 						required
 					/>
 					<Input
@@ -61,7 +79,7 @@ export const LoginStep1 = () => {
 						placeholder='Пароль'
 						type='password'
 						value={password}
-						onChange={event => set({ password: event.target.value })}
+						onChange={event => setPassword(event.target.value)}
 						required
 					/>
 				</div>

@@ -11,10 +11,17 @@ export interface CreateInstancePayload {
 	image_id: number
 }
 
-export interface CreateInstanceResponse {
+interface InstanceSshAccess {
+	ssh_user: string
+	ssh_host: string
+	ssh_port: number
+}
+
+export interface CreateInstanceResponse extends InstanceSshAccess {
 	instance_id: number
 	provisioning_operation_id: number
 	status: 'PROVISIONING'
+	ssh_pass: string
 }
 
 export interface Instance {
@@ -29,3 +36,5 @@ export interface Instance {
 	updated_at: string
 	deleted_at: string | null
 }
+
+export interface InstanceDetails extends InstanceSshAccess, Instance {}

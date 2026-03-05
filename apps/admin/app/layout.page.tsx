@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import { Agentation } from 'agentation'
-import '@repo/assets/theme.css'
+import './globals.css'
 
 export const metadata: Metadata = {
 	title: 'Админ-панель',

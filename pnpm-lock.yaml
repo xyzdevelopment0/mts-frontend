@@ -50,6 +50,9 @@ importers:
       '@repo/assets':
         specifier: workspace:^
         version: link:../../packages/assets
+      '@repo/auth':
+        specifier: workspace:^
+        version: link:../../packages/auth
       '@repo/shell':
         specifier: workspace:^
         version: link:../../packages/shell
@@ -120,6 +123,9 @@ importers:
       '@repo/assets':
         specifier: workspace:^
         version: link:../../packages/assets
+      '@repo/auth':
+        specifier: workspace:^
+        version: link:../../packages/auth
       '@repo/shell':
         specifier: workspace:^
         version: link:../../packages/shell
@@ -196,6 +202,21 @@ importers:
       tailwindcss:
         specifier: ^4.2.1
         version: 4.2.1
+
+  packages/auth:
+    dependencies:
+      '@repo/api-client':
+        specifier: workspace:^
+        version: link:../api-client
+      '@repo/ui':
+        specifier: workspace:^
+        version: link:../ui
+      next:
+        specifier: ^16.1.6
+        version: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react:
+        specifier: ^19.2.4
+        version: 19.2.4
 
   packages/shell:
     dependencies:

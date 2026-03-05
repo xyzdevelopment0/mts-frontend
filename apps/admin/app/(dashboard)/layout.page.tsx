@@ -8,7 +8,11 @@ type LayoutProps = Readonly<{
 	children: React.ReactNode
 }>
 
-const appOrigin = (process.env.NEXT_PUBLIC_APP_ORIGIN ?? '').replace(/\/$/, '')
+const dashboardOrigin = (
+	process.env.NEXT_PUBLIC_DASHBOARD_ORIGIN ??
+	process.env.NEXT_PUBLIC_APP_ORIGIN ??
+	''
+).replace(/\/$/, '')
 
 const DashboardLayout = async ({ children }: LayoutProps) => {
 	const response = await getDashboardUserQuery()
@@ -18,8 +22,8 @@ const DashboardLayout = async ({ children }: LayoutProps) => {
 	}
 
 	if (!response.data.user.is_admin) {
-		if (appOrigin) {
-			redirect(`${appOrigin}/home`)
+		if (dashboardOrigin) {
+			redirect(`${dashboardOrigin}/home`)
 		}
 
 		redirect('/login')
