@@ -1,9 +1,17 @@
-import { Home01Icon, Settings01Icon } from '@hugeicons/core-free-icons'
+import {
+	CoinsDollarIcon,
+	Home01Icon,
+	Settings01Icon,
+} from '@hugeicons/core-free-icons'
 
 export const NAVIGATION_ITEMS = [
 	{
 		href: '/home',
 		icon: Home01Icon,
+	},
+	{
+		href: '/cost',
+		icon: CoinsDollarIcon,
 	},
 	{
 		href: '/settings',

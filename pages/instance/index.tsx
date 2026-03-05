@@ -3,7 +3,8 @@ import { getInstanceQuery } from '@/api/queries/instance'
 import { Headline } from '@/components/headline'
 import { ActionButtons } from './components/action-buttons'
 import { CpuLiveChart } from './components/cpu-live-chart'
-import { InstanceNotes } from './components/notes'
+import { DeployEmptyState } from './components/deploy-empty-state'
+import { InstanceMeta } from './components/meta'
 import { RamLiveChart } from './components/ram-live-chart'
 import { InstanceTitle } from './components/title'
 
@@ -24,16 +25,22 @@ export const InstanceDetails = async ({ id }: InstanceDetailsProps) => {
 
 	return (
 		<main className='col flex-1 gap-12'>
-			<InstanceNotes />
+			<DeployEmptyState tenantId={response.data.tenant_id} />
 			<div className='col-center gap-6'>
 				<Headline
 					title={
 						<InstanceTitle
 							name={response.data.name}
 							imageId={response.data.image_id}
+							status={response.data.status}
 						/>
 					}
-					description={response.data.ip_address}
+					description={
+						<InstanceMeta
+							flavorId={response.data.flavor_id}
+							ipAddress={response.data.ip_address}
+						/>
+					}
 				/>
 				<ActionButtons />
 			</div>

@@ -1,15 +1,11 @@
 import { type Flavor } from '@/types/dashboard'
 import { cn } from '@/utils/cn'
+import { formatRamGb } from '@/utils/format-ram-gb'
 
 type FlavorSelectProps = {
 	items: Flavor[]
 	value: number | null
 	onChange: (value: number) => void
-}
-
-const formatRam = (ramMb: number) => {
-	const value = ramMb / 1024
-	return Number.isInteger(value) ? String(value) : value.toFixed(1)
 }
 
 export const FlavorSelect = ({ items, value, onChange }: FlavorSelectProps) => (
@@ -39,7 +35,7 @@ export const FlavorSelect = ({ items, value, onChange }: FlavorSelectProps) => (
 							</span>
 							<span className='text-fg-2 text-xs'>{item.cpu} vCPU</span>
 							<span className='text-fg-2 text-xs'>
-								{formatRam(item.ram_mb)} GB
+								{formatRamGb(item.ram_mb)} GB
 							</span>
 						</button>
 					)

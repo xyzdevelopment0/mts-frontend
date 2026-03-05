@@ -1,27 +1,15 @@
 import Link from 'next/link'
 import { ImageCodeIcon } from '@/components/image-code-icon'
-import { type Instance, type InstanceStatus } from '@/types/instance'
+import { type Instance } from '@/types/instance'
 import { cn } from '@/utils/cn'
+import {
+	INSTANCE_STATUS_DOT_COLORS,
+	INSTANCE_STATUS_LABELS,
+} from '@/utils/instance-status'
 
 type InstanceProps = {
 	item: Instance
 	imageCode?: string
-}
-
-const INSTANCE_STATUS_LABELS: Record<InstanceStatus, string> = {
-	PROVISIONING: 'Разворачивается',
-	RUNNING: 'Запущен',
-	STOPPED: 'Остановлен',
-	ERROR: 'Ошибка',
-	TERMINATED: 'Удален',
-}
-
-const INSTANCE_STATUS_DOT_COLORS: Record<InstanceStatus, string> = {
-	PROVISIONING: 'bg-amber-4',
-	RUNNING: 'bg-green-4',
-	STOPPED: 'bg-gray-4',
-	ERROR: 'bg-red-4',
-	TERMINATED: 'bg-fg-1',
 }
 
 export const HomeInstance = ({ item, imageCode }: InstanceProps) => (
