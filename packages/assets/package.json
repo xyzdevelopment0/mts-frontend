@@ -1,0 +1,16 @@
+{
+	"name": "@repo/assets",
+	"private": true,
+	"type": "module",
+	"sideEffects": [
+		"**/*.css"
+	],
+	"exports": {
+		"./theme.css": "./theme.css",
+		"./postcss.config": "./postcss.config.mjs"
+	},
+	"devDependencies": {
+		"@tailwindcss/postcss": "^4.2.1",
+		"tailwindcss": "^4.2.1"
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"name": "@repo/types",
+	"private": true,
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./billing/usage": "./src/billing/usage.ts",
+		"./dashboard": "./src/dashboard/index.ts",
+		"./deployment": "./src/deployment.ts",
+		"./instance": "./src/instance.ts"
+	}
+}

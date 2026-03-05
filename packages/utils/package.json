@@ -1,0 +1,19 @@
+{
+	"name": "@repo/utils",
+	"private": true,
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./cn": "./src/cn.ts",
+		"./create-store": "./src/create-store.tsx",
+		"./format-ram-gb": "./src/format-ram-gb.ts",
+		"./instance-status": "./src/instance-status.ts"
+	},
+	"dependencies": {
+		"@repo/types": "workspace:^",
+		"clsx": "^2.1.1",
+		"react": "^19.2.4",
+		"tailwind-merge": "^3.5.0",
+		"zustand": "^5.0.11"
+	}
+}

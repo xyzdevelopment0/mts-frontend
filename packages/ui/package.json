@@ -1,0 +1,23 @@
+{
+	"name": "@repo/ui",
+	"private": true,
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./avatar": "./src/avatar.tsx",
+		"./button": "./src/button.tsx",
+		"./empty-state": "./src/empty-state.tsx",
+		"./headline": "./src/headline.tsx",
+		"./image-code-icon": "./src/image-code-icon.tsx",
+		"./input": "./src/input.tsx",
+		"./modal": "./src/modal.tsx",
+		"./stepper": "./src/stepper.tsx",
+		"./textarea": "./src/textarea.tsx"
+	},
+	"dependencies": {
+		"@icons-pack/react-simple-icons": "^13.12.0",
+		"@repo/utils": "workspace:^",
+		"framer-motion": "^12.34.5",
+		"react": "^19.2.4"
+	}
+}
