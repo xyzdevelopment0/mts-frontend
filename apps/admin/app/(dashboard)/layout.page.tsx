@@ -56,6 +56,7 @@ const createSuperuserData = (
 		is_admin: true,
 	},
 	tenant: {
+		id: 0,
 		name: 'Admin',
 		balance: 0,
 		plan: {
@@ -65,8 +66,8 @@ const createSuperuserData = (
 			max_ram_mb: 0,
 		},
 		instances: [],
+		deployments: [],
 	},
-	deployments: [],
 	images: [],
 	flavors: [],
 })
@@ -109,7 +110,10 @@ const DashboardLayout = async ({ children }: LayoutProps) => {
 			...response.data.user,
 			is_admin: response.data.user.is_admin || isSuperuser,
 		},
-		deployments: response.data.deployments ?? [],
+		tenant: {
+			...response.data.tenant,
+			deployments: response.data.tenant.deployments ?? [],
+		},
 		images: response.data.images ?? [],
 		flavors: response.data.flavors ?? [],
 	}

@@ -7,7 +7,7 @@ import { NAVIGATION_ITEMS } from './constants/items'
 export const Navigation = () => {
 	const { data } = useDashboard()
 	const homeLabel = String(
-		data.tenant.instances.length + data.deployments.length
+		data.tenant.instances.length + data.tenant.deployments.length
 	)
 
 	return (

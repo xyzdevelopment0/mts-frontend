@@ -18,7 +18,10 @@ const DashboardLayout = async ({ children }: LayoutProps) => {
 
 	const data: Dashboard = {
 		...response.data,
-		deployments: response.data.deployments ?? [],
+		tenant: {
+			...response.data.tenant,
+			deployments: response.data.tenant.deployments ?? [],
+		},
 	}
 
 	return (

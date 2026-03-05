@@ -47,20 +47,23 @@ const createDashboardStore = (props: Props) =>
 			}),
 		addDeployment: deployment =>
 			set(state => {
-				const nextDeployments = state.data.deployments.some(
+				const nextDeployments = state.data.tenant.deployments.some(
 					item => item.deployment_id === deployment.deployment_id
 				)
-					? state.data.deployments.map(item =>
+					? state.data.tenant.deployments.map(item =>
 							item.deployment_id === deployment.deployment_id
 								? deployment
 								: item
 						)
-					: [deployment, ...state.data.deployments]
+					: [deployment, ...state.data.tenant.deployments]
 
 				return {
 					data: {
 						...state.data,
-						deployments: nextDeployments,
+						tenant: {
+							...state.data.tenant,
+							deployments: nextDeployments,
+						},
 					},
 				}
 			}),
@@ -68,9 +71,14 @@ const createDashboardStore = (props: Props) =>
 			set(state => ({
 				data: {
 					...state.data,
-					deployments: state.data.deployments.map(item =>
-						item.deployment_id === deployment.deployment_id ? deployment : item
-					),
+					tenant: {
+						...state.data.tenant,
+						deployments: state.data.tenant.deployments.map(item =>
+							item.deployment_id === deployment.deployment_id
+								? deployment
+								: item
+						),
+					},
 				},
 			})),
 	}))

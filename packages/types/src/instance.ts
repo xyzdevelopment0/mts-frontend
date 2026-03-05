@@ -22,9 +22,11 @@ export interface CreateInstanceResponse extends InstanceSshAccess {
 	provisioning_operation_id: number
 	status: 'PROVISIONING'
 	ssh_password: string
+	postgres_username: string
+	postgres_password: string
 }
 
-export interface Instance {
+export interface Instance extends InstanceSshAccess {
 	id: number
 	tenant_id: number
 	name: string
@@ -32,9 +34,10 @@ export interface Instance {
 	image_id: number
 	status: InstanceStatus
 	ip_address: string
+	postgres_username: string
 	created_at: string
 	updated_at: string
 	deleted_at: string | null
 }
 
-export interface InstanceDetails extends InstanceSshAccess, Instance {}
+export interface InstanceDetails extends Instance {}

@@ -1,10 +1,12 @@
+import { type DeploymentDashRead } from '../deployment'
 import { type Instance } from '../instance'
 import { type Plan } from './plan'
 
 export interface Tenant {
-	id?: number
+	id: number
 	name: string
 	balance: number
 	plan: Plan
 	instances: Instance[]
+	deployments: DeploymentDashRead[]
 }

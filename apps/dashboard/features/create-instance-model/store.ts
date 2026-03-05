@@ -1,13 +1,22 @@
 import { createStore } from 'zustand/vanilla'
 import { createContextStore } from '@repo/utils/create-store'
 
-type CreateInstanceStep = 1 | 2 | 3
+type CreateInstanceStep = 1 | 2 | 3 | 4
+
+export interface CreatedInstanceCredentials {
+	instanceId: number
+	sshUsername: string
+	sshHost: string
+	sshPort: number
+	sshPassword: string
+}
 
 interface State {
 	step: CreateInstanceStep
 	name: string
 	flavorId: number | null
 	imageId: number | null
+	createdInstance: CreatedInstanceCredentials | null
 	error: string
 	isPending: boolean
 }
@@ -27,12 +36,13 @@ const createCreateInstanceModelStore = () =>
 		name: '',
 		flavorId: null,
 		imageId: null,
+		createdInstance: null,
 		error: '',
 		isPending: false,
 		set: state => set({ ...state }),
 		nextStep: () =>
 			set(state => ({
-				step: state.step === 3 ? 3 : ((state.step + 1) as CreateInstanceStep),
+				step: state.step === 4 ? 4 : ((state.step + 1) as CreateInstanceStep),
 			})),
 	}))
 
