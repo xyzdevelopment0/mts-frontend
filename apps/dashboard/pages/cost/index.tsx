@@ -1,6 +1,5 @@
-import { ChartBarLineIcon } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { getBillingUsageQuery } from '@repo/api-client/queries/billing'
+import { Headline } from '@repo/ui/headline'
 import { cn } from '@repo/utils/cn'
 import { type BillingUsageItem } from '@repo/types/billing/usage'
 import { formatCost, formatInteger, formatPercent, formatTime } from './utils'
@@ -30,6 +29,32 @@ const CHARGE_LABELS: Record<ChargeKind, string> = {
 	base: 'Базовая ставка',
 	cpu: 'CPU',
 	ram: 'RAM',
+}
+
+const USAGE_WINDOW_MINUTES = 30
+
+const getUsageBarTone = (
+	index: number,
+	total: number,
+	max: number,
+	size: number
+) => {
+	const recency = size > 0 ? (index + 1) / size : 0
+	const intensity = max > 0 ? total / max : 0
+
+	if (recency >= 0.97 || intensity >= 0.94) {
+		return 'bg-purple-4'
+	}
+	if (recency >= 0.86 || intensity >= 0.78) {
+		return 'bg-purple-4/80'
+	}
+	if (recency >= 0.72 || intensity >= 0.62) {
+		return 'bg-purple-3/80'
+	}
+	if (recency >= 0.52 || intensity >= 0.44) {
+		return 'bg-purple-3/65'
+	}
+	return 'bg-purple-2/70'
 }
 
 const chargeEntries = (
@@ -150,7 +175,7 @@ export const Cost = async () => {
 	const topChargeShare = chargeTotal > 0 ? topChargePart.value / chargeTotal : 0
 
 	const timeline = aggregateTimeline(items)
-	const visibleTimeline = timeline.slice(-20)
+	const visibleTimeline = timeline.slice(-USAGE_WINDOW_MINUTES)
 	const maxTimelineTotal = Math.max(
 		...visibleTimeline.map(item => item.total),
 		0.000001
@@ -210,7 +235,7 @@ export const Cost = async () => {
 
 			<section className='grid grid-cols-1 gap-4 md:grid-cols-3'>
 				<article className='col bg-bg-2 rounded-2xl p-5'>
-					<span className='text-fg-2 text-sm'>Total charged</span>
+					<span className='text-fg-2 text-sm'>Всего начислено</span>
 					<span className='text-fg-4 mt-1 text-2xl font-medium'>
 						{formatCost(billedTotal)}
 					</span>
@@ -228,7 +253,7 @@ export const Cost = async () => {
 					</span>
 				</article>
 				<article className='col bg-bg-2 rounded-2xl p-5'>
-					<span className='text-fg-2 text-sm'>Top cost driver</span>
+					<span className='text-fg-2 text-sm'>Основной источник затрат</span>
 					<span className='text-fg-4 mt-1 text-2xl font-medium'>
 						{CHARGE_LABELS[topChargePart.kind]}
 					</span>
@@ -240,66 +265,41 @@ export const Cost = async () => {
 
 			<section className='grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_320px]'>
 				<article className='col bg-bg-2 gap-4 rounded-2xl p-5'>
-					<div className='row-center justify-between gap-3'>
-						<div className='row-center gap-2'>
-							<HugeiconsIcon
-								icon={ChartBarLineIcon}
-								size={18}
-								strokeWidth={2}
-							/>
-							<h2 className='text-fg-4 text-sm font-medium'>
-								Структура расходов
-							</h2>
-						</div>
-						<span className='text-fg-1 text-xs'>{periodLabel}</span>
-					</div>
-					<div className='row-center gap-3 text-xs'>
-						<span className='row-center gap-1'>
-							<span className='bg-purple-4/45 h-2 w-2 rounded-full' />
-							<span className='text-fg-2'>Base</span>
-						</span>
-						<span className='row-center gap-1'>
-							<span className='bg-sky-4/75 h-2 w-2 rounded-full' />
-							<span className='text-fg-2'>CPU</span>
-						</span>
-						<span className='row-center gap-1'>
-							<span className='bg-green-4/80 h-2 w-2 rounded-full' />
-							<span className='text-fg-2'>RAM</span>
-						</span>
-					</div>
-					<div className='overflow-x-auto'>
-						<div className='row-end min-w-max gap-2'>
+					<Headline
+						title='Использование за последние 30 минут'
+						description={periodLabel}
+					/>
+					<div
+						className={cn(
+							'overflow-x-auto rounded-[1.75rem] px-2 py-3 sm:px-3 sm:py-4',
+							'bg-[linear-gradient(180deg,var(--color-bg-3),var(--color-bg-2))]'
+						)}
+					>
+						<div className='row-end h-56 min-w-max gap-2'>
 							{visibleTimeline.length > 0 ? (
-								visibleTimeline.map(item => {
-									const baseHeight = (item.base / maxTimelineTotal) * 100
-									const cpuHeight = (item.cpu / maxTimelineTotal) * 100
-									const ramHeight = (item.ram / maxTimelineTotal) * 100
-									const total = item.base + item.cpu + item.ram
+								visibleTimeline.map((item, index) => {
+									const total = item.total
+									const height = Math.max((total / maxTimelineTotal) * 100, 8)
 									const label = formatTime(item.startedAt)
 
 									return (
-										<div key={item.key} className='col-center gap-2'>
+										<div
+											key={item.key}
+											className='col-center h-full justify-end'
+										>
 											<div
 												className={cn(
-													'flex h-44 w-8 flex-col justify-end overflow-hidden rounded-md',
-													'bg-bg-3'
+													'w-4 rounded-full sm:w-5',
+													getUsageBarTone(
+														index,
+														total,
+														maxTimelineTotal,
+														visibleTimeline.length
+													)
 												)}
 												title={`${label} • ${formatCost(total)}`}
-											>
-												<div
-													className='bg-purple-4/45'
-													style={{ height: `${baseHeight}%` }}
-												/>
-												<div
-													className='bg-sky-4/75'
-													style={{ height: `${cpuHeight}%` }}
-												/>
-												<div
-													className='bg-green-4/80'
-													style={{ height: `${ramHeight}%` }}
-												/>
-											</div>
-											<span className='text-fg-1 text-[11px]'>{label}</span>
+												style={{ height: `${height}%` }}
+											/>
 										</div>
 									)
 								})
@@ -317,15 +317,17 @@ export const Cost = async () => {
 
 			<section className='grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_280px]'>
 				<article className='col bg-bg-2 gap-3 rounded-2xl p-5'>
-					<h2 className='text-fg-4 text-sm font-medium'>Top instances</h2>
+					<h2 className='text-fg-4 text-sm font-medium'>
+						Самые затратные инстансы
+					</h2>
 					<div className='overflow-x-auto'>
 						<table className='min-w-full text-sm'>
 							<thead>
 								<tr className='text-fg-1 border-bg-3 border-b text-left'>
-									<th className='py-2 pr-4 font-medium'>Instance</th>
-									<th className='py-2 pr-4 font-medium'>Total</th>
+									<th className='py-2 pr-4 font-medium'>Инстанс</th>
+									<th className='py-2 pr-4 font-medium'>Итого</th>
 									<th className='py-2 pr-4 font-medium'>RAM</th>
-									<th className='py-2 font-medium'>Samples</th>
+									<th className='py-2 font-medium'>Записи</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -366,7 +368,7 @@ export const Cost = async () => {
 				</article>
 
 				<article className='col bg-bg-2 gap-3 rounded-2xl p-5'>
-					<h2 className='text-fg-4 text-sm font-medium'>Insights</h2>
+					<h2 className='text-fg-4 text-sm font-medium'>Выводы</h2>
 					<div className='col gap-2'>
 						{insights.length > 0 ? (
 							insights.map(item => (

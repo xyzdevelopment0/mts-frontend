@@ -7,24 +7,14 @@ import { loginRequest } from '@repo/api-client/endpoints/auth'
 import { Button } from '@repo/ui/button'
 import { Headline } from '@repo/ui/headline'
 import { Input } from '@repo/ui/input'
+import { navigateTo, resolveSuccessHref } from './success-href'
 
 type LoginProps = {
 	successHref: string
+	superuserSuccessHref?: string
 }
 
-const isAbsoluteHref = (href: string) =>
-	href.startsWith('http://') || href.startsWith('https://')
-
-const navigateTo = (href: string, push: (href: string) => void) => {
-	if (isAbsoluteHref(href)) {
-		window.location.assign(href)
-		return
-	}
-
-	push(href)
-}
-
-export const Login = ({ successHref }: LoginProps) => {
+export const Login = ({ successHref, superuserSuccessHref }: LoginProps) => {
 	const router = useRouter()
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -52,7 +42,14 @@ export const Login = ({ successHref }: LoginProps) => {
 						})
 
 						if (response.ok) {
-							navigateTo(successHref, router.push)
+							navigateTo(
+								resolveSuccessHref({
+									data: response.data,
+									successHref,
+									superuserSuccessHref,
+								}),
+								router.push
+							)
 							return
 						}
 

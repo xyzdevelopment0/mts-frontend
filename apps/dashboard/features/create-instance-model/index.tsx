@@ -10,33 +10,24 @@ import { useDashboard } from '@/features/dashboard'
 import { FlavorSelect } from './components/flavor-select'
 import { ImageSelect } from './components/image-select'
 import { NameInput } from './components/name-input'
-import { SshAccess } from './components/ssh-access'
 import { CreateInstanceModelProvider, useCreateInstanceModel } from './store'
 
-const CREATE_INSTANCE_STEPS = [
-	{ id: 1 },
-	{ id: 2 },
-	{ id: 3 },
-	{ id: 4 },
-] as const
+const CREATE_INSTANCE_STEPS = [{ id: 1 }, { id: 2 }, { id: 3 }] as const
 
 const CREATE_INSTANCE_ERROR_MESSAGE =
 	'Не удалось создать сервис. Попробуйте снова.'
 
-const CreateInstanceModelContent = () => {
+type CreateInstanceModelProps = {
+	onCreated?: (instanceId: number) => void
+}
+
+const CreateInstanceModelContent = ({
+	onCreated,
+}: CreateInstanceModelProps) => {
 	const router = useRouter()
-	const { data } = useDashboard()
-	const {
-		step,
-		name,
-		flavorId,
-		imageId,
-		createdInstance,
-		error,
-		isPending,
-		set,
-		nextStep,
-	} = useCreateInstanceModel()
+	const { data, addInstance } = useDashboard()
+	const { step, name, flavorId, imageId, error, isPending, set, nextStep } =
+		useCreateInstanceModel()
 	const activeImages = useMemo(
 		() => data.images.filter(item => item.is_active),
 		[data.images]
@@ -81,55 +72,36 @@ const CreateInstanceModelContent = () => {
 				value={flavorId}
 				onChange={value => set({ flavorId: value })}
 			/>
-		) : step === 3 ? (
+		) : (
 			<ImageSelect
 				items={activeImages}
 				value={imageId}
 				onChange={value => set({ imageId: value })}
 			/>
-		) : createdInstance ? (
-			<SshAccess
-				sshUser={createdInstance.ssh_user}
-				sshPass={createdInstance.ssh_pass}
-				sshHost={createdInstance.ssh_host}
-				sshPort={createdInstance.ssh_port}
-			/>
-		) : null
+		)
 
 	const stepTitle =
 		step === 1
 			? 'Создание сервиса'
 			: step === 2
 				? 'Выбор конфигурации'
-				: step === 3
-					? 'Выбор образа'
-					: 'SSH доступ'
+				: 'Выбор образа'
 	const stepDescription =
 		step === 1
 			? 'Укажите имя будущего сервера.'
 			: step === 2
 				? 'Определите вычислительные ресурсы.'
-				: step === 3
-					? 'Определите базовую операционную систему.'
-					: 'Скопируйте данные для подключения к серверу.'
+				: 'Определите базовую операционную систему.'
 
 	const isStepValid =
 		step === 1
 			? name.trim().length > 0
 			: step === 2
 				? data.flavors.length > 0 && flavorId !== null
-				: step === 3
-					? activeImages.length > 0 && imageId !== null
-					: createdInstance !== null
+				: activeImages.length > 0 && imageId !== null
 
 	const submitLabel =
-		step === 3
-			? isPending
-				? 'Создаем...'
-				: 'Создать сервис'
-			: step === 4
-				? 'Открыть сервис'
-				: 'Продолжить'
+		step === 3 ? (isPending ? 'Создаем...' : 'Создать сервис') : 'Продолжить'
 
 	const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
@@ -139,15 +111,6 @@ const CreateInstanceModelContent = () => {
 		}
 
 		set({ error: '' })
-
-		if (step === 4) {
-			if (!createdInstance) {
-				return
-			}
-
-			router.push(`/instance/${createdInstance.instance_id}`)
-			return
-		}
 
 		if (step !== 3) {
 			nextStep()
@@ -161,17 +124,35 @@ const CreateInstanceModelContent = () => {
 		set({ isPending: true })
 
 		try {
+			const serviceName = name.trim()
 			const response = await createInstanceRequest({
-				name: name.trim(),
+				name: serviceName,
 				flavor_id: flavorId,
 				image_id: imageId,
 			})
 
 			if (response.ok && response.data) {
-				set({
-					createdInstance: response.data,
-					step: 4,
+				const currentTimestamp = new Date().toISOString()
+				const tenantId =
+					data.tenant.id ?? data.tenant.instances[0]?.tenant_id ?? 0
+
+				addInstance({
+					id: response.data.instance_id,
+					tenant_id: tenantId,
+					name: serviceName,
+					flavor_id: flavorId,
+					image_id: imageId,
+					status: response.data.status,
+					ip_address: response.data.ssh_host || '',
+					created_at: currentTimestamp,
+					updated_at: currentTimestamp,
+					deleted_at: null,
 				})
+				if (onCreated) {
+					onCreated(response.data.instance_id)
+					return
+				}
+				router.push(`/instance/${response.data.instance_id}`)
 				return
 			}
 
@@ -211,8 +192,10 @@ const CreateInstanceModelContent = () => {
 	)
 }
 
-export const CreateInstanceModel = () => (
+export const CreateInstanceModel = ({
+	onCreated,
+}: CreateInstanceModelProps) => (
 	<CreateInstanceModelProvider>
-		<CreateInstanceModelContent />
+		<CreateInstanceModelContent onCreated={onCreated} />
 	</CreateInstanceModelProvider>
 )

@@ -230,7 +230,7 @@ export const Modal = ({
 							exit={{ opacity: 0, scale: 0.95 }}
 							transition={MODAL_TRANSITION}
 							className={cn(
-								'bg-background relative z-10 grid h-[440px] w-full max-w-[360px] overflow-hidden rounded-3xl shadow-md',
+								'bg-background relative z-10 grid h-[540px] w-full max-w-[360px] overflow-hidden rounded-3xl shadow-md',
 								'corner-superellipse/1.125 outline-none',
 								className
 							)}

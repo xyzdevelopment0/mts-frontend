@@ -34,6 +34,16 @@ export interface CreateDeploymentResponse {
 	status: string
 }
 
+export interface DeploymentDashRead {
+	deployment_id: string
+	github_url: string
+	status: string
+	public_url: string | null
+	error_message: string | null
+	created_at: string
+	updated_at: string
+}
+
 export interface ValidationErrorDetail {
 	loc: Array<string | number>
 	msg: string

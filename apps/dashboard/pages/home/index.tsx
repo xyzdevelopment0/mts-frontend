@@ -7,9 +7,15 @@ import { Instances } from './components/instances'
 export const Home = () => {
 	const { data } = useDashboard()
 
-	if (data.tenant.instances.length === 0) {
+	if (data.tenant.instances.length === 0 && data.deployments.length === 0) {
 		return <HomeEmptyState />
 	}
 
-	return <Instances items={data.tenant.instances} images={data.images} />
+	return (
+		<Instances
+			instances={data.tenant.instances}
+			deployments={data.deployments}
+			images={data.images}
+		/>
+	)
 }

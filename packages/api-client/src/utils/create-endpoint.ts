@@ -14,9 +14,10 @@ export interface EndpointResponse<T> {
 
 const RETRYABLE_CONTENT_STATUSES = new Set([400, 415, 422])
 
-const baseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL ?? '')
+const apiBaseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL ?? '')
 	.replace(/\/api\/v1\/?$/, '')
 	.replace(/\/$/, '')
+const baseUrl = typeof window === 'undefined' ? apiBaseUrl : ''
 
 const request = async <T>({
 	method,
@@ -65,6 +66,7 @@ export const createEndpoint = {
 		request<T>({ method: 'POST', path, body }),
 	postForm: <T>(path: string, body: URLSearchParams) =>
 		request<T>({ method: 'POST', path, body }),
+	deleteJson: <T>(path: string) => request<T>({ method: 'DELETE', path }),
 	isRetryableContentStatus: (status: number) =>
 		RETRYABLE_CONTENT_STATUSES.has(status),
 }

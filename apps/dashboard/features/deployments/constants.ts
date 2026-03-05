@@ -69,3 +69,29 @@ export const DEPLOYMENT_ATTEMPT_STATUS_COPY: Record<
 	build_failed: 'Сборка этой попытки не прошла, анализирую причину.',
 	failed: 'Попытка завершилась ошибкой, готовлю следующий ретрай.',
 }
+
+export const DEPLOYMENT_STATUS_LABELS: Record<DeploymentStatus, string> = {
+	analyzing: 'Анализ',
+	cloning: 'Клонирование',
+	generating_dockerfile: 'Dockerfile',
+	building: 'Сборка',
+	configuring_access: 'Публикация',
+	running: 'Запущен',
+	retrying: 'Повтор',
+	failed: 'Ошибка',
+	deleting: 'Удаляется',
+	deleted: 'Удален',
+}
+
+export const DEPLOYMENT_STATUS_DOT_COLORS: Record<DeploymentStatus, string> = {
+	analyzing: 'bg-amber-4',
+	cloning: 'bg-amber-4',
+	generating_dockerfile: 'bg-amber-4',
+	building: 'bg-amber-4',
+	configuring_access: 'bg-amber-4',
+	running: 'bg-green-4',
+	retrying: 'bg-purple-4',
+	failed: 'bg-amber-4',
+	deleting: 'bg-gray-4',
+	deleted: 'bg-fg-1',
+}

@@ -5,10 +5,13 @@
 	"exports": {
 		".": "./src/index.ts",
 		"./constants/cookie-names": "./src/constants/cookie-names.ts",
+		"./endpoints/admin": "./src/endpoints/admin.ts",
 		"./endpoints/auth": "./src/endpoints/auth.ts",
 		"./endpoints/deployments": "./src/endpoints/deployments.ts",
 		"./endpoints/instances": "./src/endpoints/instances.ts",
+		"./queries/admin": "./src/queries/admin.ts",
 		"./queries/billing": "./src/queries/billing.ts",
+		"./queries/deployment": "./src/queries/deployment.ts",
 		"./queries/dashboard": "./src/queries/dashboard.ts",
 		"./queries/instance": "./src/queries/instance.ts",
 		"./utils/create-endpoint": "./src/utils/create-endpoint.ts",

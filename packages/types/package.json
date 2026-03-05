@@ -4,6 +4,7 @@
 	"type": "module",
 	"exports": {
 		".": "./src/index.ts",
+		"./admin": "./src/admin/index.ts",
 		"./billing/usage": "./src/billing/usage.ts",
 		"./dashboard": "./src/dashboard/index.ts",
 		"./deployment": "./src/deployment.ts",

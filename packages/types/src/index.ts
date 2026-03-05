@@ -1,7 +1,22 @@
 export type { BillingUsage, BillingUsageItem } from './billing/usage'
+export { ADMIN_INSTANCE_STATUSES, ADMIN_USER_ROLES } from './admin'
+export type {
+	AdminBillingUsageItem,
+	AdminDeployment,
+	AdminDeploymentAttempt,
+	AdminInstance,
+	AdminInstanceActionPayload,
+	AdminInstanceStatus,
+	AdminMessageResponse,
+	AdminOverview,
+	AdminTenant,
+	AdminUser,
+	AdminUserRole,
+} from './admin'
 export type {
 	CreateDeploymentPayload,
 	CreateDeploymentResponse,
+	DeploymentDashRead,
 	Deployment,
 	DeploymentAttempt,
 	DeploymentAttemptStatus,

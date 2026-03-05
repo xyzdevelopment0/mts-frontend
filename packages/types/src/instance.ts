@@ -12,7 +12,7 @@ export interface CreateInstancePayload {
 }
 
 interface InstanceSshAccess {
-	ssh_user: string
+	ssh_username: string
 	ssh_host: string
 	ssh_port: number
 }
@@ -21,7 +21,7 @@ export interface CreateInstanceResponse extends InstanceSshAccess {
 	instance_id: number
 	provisioning_operation_id: number
 	status: 'PROVISIONING'
-	ssh_pass: string
+	ssh_password: string
 }
 
 export interface Instance {

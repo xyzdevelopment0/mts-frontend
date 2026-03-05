@@ -8,26 +8,16 @@ import { Button } from '@repo/ui/button'
 import { Headline } from '@repo/ui/headline'
 import { Input } from '@repo/ui/input'
 import { Stepper } from '@repo/ui/stepper'
+import { navigateTo, resolveSuccessHref } from './success-href'
 
 type RegisterProps = {
 	successHref: string
+	superuserSuccessHref?: string
 }
 
 type RegisterStep = 1 | 2 | 3
 
 const REGISTER_STEPS = [{ id: 1 }, { id: 2 }, { id: 3 }] as const
-
-const isAbsoluteHref = (href: string) =>
-	href.startsWith('http://') || href.startsWith('https://')
-
-const navigateTo = (href: string, push: (href: string) => void) => {
-	if (isAbsoluteHref(href)) {
-		window.location.assign(href)
-		return
-	}
-
-	push(href)
-}
 
 const RegisterAvatar = ({ letter }: { letter: string }) => (
 	<div className='center border-gray-2 size-28 rounded-full border-2 border-dashed'>
@@ -37,7 +27,10 @@ const RegisterAvatar = ({ letter }: { letter: string }) => (
 	</div>
 )
 
-export const Register = ({ successHref }: RegisterProps) => {
+export const Register = ({
+	successHref,
+	superuserSuccessHref,
+}: RegisterProps) => {
 	const router = useRouter()
 	const [step, setStep] = useState<RegisterStep>(1)
 	const [email, setEmail] = useState('')
@@ -153,7 +146,14 @@ export const Register = ({ successHref }: RegisterProps) => {
 								})
 
 								if (response.ok) {
-									navigateTo(successHref, router.push)
+									navigateTo(
+										resolveSuccessHref({
+											data: response.data,
+											successHref,
+											superuserSuccessHref,
+										}),
+										router.push
+									)
 									return
 								}
 

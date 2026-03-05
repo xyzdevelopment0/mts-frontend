@@ -105,7 +105,7 @@ export const LiveMetricChart = ({
 	}, [max, maxStep, min])
 
 	return (
-		<div className='col lg:flex-1'>
+		<div className='col'>
 			<Label>{label}</Label>
 			<div className='h-56'>
 				<Liveline
